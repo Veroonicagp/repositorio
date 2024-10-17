@@ -4,17 +4,12 @@ import { Paginated } from "../../models/paginated.model";
 import { Person } from "../../models/person.model";
 
 interface PersonRaw{
-    id:string,
-    name:{
-        title:string;
-        first:string;
-        last:string;
-    },
-    age:number,
-    picture:{
-        large:string
-        thumbnail:string
-    }
+    id: string
+    nombre: string
+    apellidos: string
+    email: string
+    genero: string
+    grupoId: string
 }
 
 @Injectable({
@@ -29,13 +24,14 @@ interface PersonRaw{
     getOne(data: PersonRaw):Person {
         return {
             id:data.id, 
-            name:data.name.first, 
-            surname:data.name.last, 
-            age:data.age,
-            picture:{
-                large:data.picture.large, 
-                thumbnail:data.picture.thumbnail
-            }};
+            name:data.nombre, 
+            surname:data.apellidos, 
+            age:(data as any)["age"]??0,
+            picture:(data as any)["picture"]?{
+                large:(data as any)["picture"].large, 
+                thumbnail:(data as any)["picture"].thumbnail
+            }:undefined
+        };
     }
     getAdded(data: PersonRaw):Person {
         return this.getOne(data);
